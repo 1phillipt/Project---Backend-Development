@@ -5,7 +5,6 @@ import authMiddleware, { AuthRequest } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-// protect all task routes
 router.use(authMiddleware);
 
 // POST /api/projects/:projectId/tasks
@@ -26,7 +25,7 @@ router.post("/projects/:projectId/tasks", async (req: AuthRequest, res: Response
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }
@@ -35,7 +34,7 @@ router.post("/projects/:projectId/tasks", async (req: AuthRequest, res: Response
       title,
       description,
       status,
-      project: projectId,
+      project: project._id,
     });
 
     res.status(201).json(task);
@@ -56,7 +55,7 @@ router.get("/projects/:projectId/tasks", async (req: AuthRequest, res: Response)
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }
@@ -88,7 +87,7 @@ router.put("/tasks/:taskId", async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }
@@ -123,7 +122,7 @@ router.delete("/tasks/:taskId", async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }

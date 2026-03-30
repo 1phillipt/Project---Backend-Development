@@ -1,16 +1,17 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
-export interface IProject extends Document {
-  name: string;
+export interface ITask {
+  title: string;
   description?: string;
-  user: Schema.Types.ObjectId;
+  status: "To Do" | "In Progress" | "Done";
+  project: Types.ObjectId;
 }
 
-const projectSchema = new mongoose.Schema<IProject>(
+const taskSchema = new Schema<ITask>(
   {
-    name: {
+    title: {
       type: String,
-      required: [true, "Project name is required"],
+      required: [true, "Task title is required"],
       trim: true,
     },
     description: {
@@ -18,9 +19,14 @@ const projectSchema = new mongoose.Schema<IProject>(
       trim: true,
       default: "",
     },
-    user: {
+    status: {
+      type: String,
+      enum: ["To Do", "In Progress", "Done"],
+      default: "To Do",
+    },
+    project: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Project",
       required: true,
     },
   },
@@ -29,6 +35,6 @@ const projectSchema = new mongoose.Schema<IProject>(
   }
 );
 
-const Project: Model<IProject> = mongoose.model<IProject>("Project", projectSchema);
+const Task = model<ITask>("Task", taskSchema);
 
-export default Project;
+export default Task;

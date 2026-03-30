@@ -1,10 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { Response } from "express";
 import Project from "../models/Project";
 import authMiddleware, { AuthRequest } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-// protect all project routes
 router.use(authMiddleware);
 
 // POST /api/projects
@@ -49,7 +48,7 @@ router.get("/:id", async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }
@@ -72,7 +71,7 @@ router.put("/:id", async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }
@@ -97,7 +96,7 @@ router.delete("/:id", async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    if (project.user.toString() !== req.user?._id.toString()) {
+    if (project.user.toString() !== req.user?._id) {
       res.status(403).json({ message: "Forbidden: not your project" });
       return;
     }

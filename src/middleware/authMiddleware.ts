@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 
 export interface AuthRequest extends Request {
-  user?: IUser;
+  user?: {
+    _id: string;
+    username: string;
+    email: string;
+  };
 }
 
 const authMiddleware = async (
@@ -29,7 +33,7 @@ const authMiddleware = async (
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string
-    ) as JwtPayload;
+    ) as JwtPayload & { id: string };
 
     const user = await User.findById(decoded.id).select("-password");
 
@@ -38,9 +42,14 @@ const authMiddleware = async (
       return;
     }
 
-    req.user = user;
+    req.user = {
+      _id: String(user._id),
+      username: user.username,
+      email: user.email,
+    };
+
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ message: "Not authorized, token failed" });
   }
 };

@@ -1,12 +1,12 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
-export interface IProject extends Document {
+export interface IProject {
   name: string;
   description?: string;
-  user: Schema.Types.ObjectId;
+  user: Types.ObjectId;
 }
 
-const projectSchema = new mongoose.Schema<IProject>(
+const projectSchema = new Schema<IProject>(
   {
     name: {
       type: String,
@@ -29,6 +29,6 @@ const projectSchema = new mongoose.Schema<IProject>(
   }
 );
 
-const Project: Model<IProject> = mongoose.model<IProject>("Project", projectSchema);
+const Project = model<IProject>("Project", projectSchema);
 
 export default Project;
