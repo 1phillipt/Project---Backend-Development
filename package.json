@@ -1,12 +1,12 @@
 {
   "name": "taskmaster-backend",
-  "type": "module",
   "version": "1.0.0",
   "description": "Backend API for TaskMaster project",
-  "main": "server.ts",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon --watch . --ext ts --exec ts-node server.ts",
-    "start": "ts-node server.ts"
+    "dev": "nodemon --watch src --ext ts --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "Phillip",
